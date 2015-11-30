@@ -9,13 +9,14 @@ re = 300; % Forearm length in mm
 alpha = [0 120*pi/180 -120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
 
 %% Inverse Kinematics - returns joint angles given end-effector position
-E = [10; -300; 0];% User desired pose of TCP (Tool Center Point)
+E = [0; -300; 0];% User desired pose of TCP (Tool Center Point)
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
 [q3, F3, J3, E3] = IK(E, alpha(3), f, e, rf, re);
 
 %% Forward Kinematics - returns end-effector position given joint angles
-
+disp('End Effector Position from FK as E_0:')
+E_0 = FK(q1, q2, q3, alpha, f, e, rf, re)'
 
 
 %% Plot Delta robot

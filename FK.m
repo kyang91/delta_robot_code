@@ -1,35 +1,25 @@
 % Delta Robot - Inverse Kinematics
-clc; clear;
+function E_0 = FK(q1, q2, q3, alpha, f, e, rf, re)
 
 sym pi;
 syms x y z;
-
-% -----temp variable
-f = 567; % equilateral triangle side of fixed platform
-e = 76; % equilateral triangle side of moving platform
-rf = 524; % Upper arm length in mm
-re = 1244; % Forearm length in mm
-q1 = 15;
-q2 = 20;
-q3 = 25;
-% -----temp variable
 
 OFi = f/2 * tan(30*pi/180);
 EEi = e/2 * tan(30*pi/180);
 R = OFi - EEi;
 
 % Rotation matrix about y-axis for virtual elbow joints J1' J2' J3'
-Roty1 = [1 0 0
-         0 1 0
-         0 0 1];
-
-Roty2 = [cos(2*pi/3)  0 sin(2*pi/3);
+Roty1 = [cos(alpha(1))  0 sin(alpha(1));
              0       1     0;
-        -sin(2*pi/3) 0 cos(2*pi/3)];
+        -sin(alpha(1)) 0 cos(alpha(1))];
 
-Roty3 = [cos(-2*pi/3)  0 sin(-2*pi/3);
+Roty2 = [cos(alpha(2))  0 sin(alpha(2));
              0       1     0;
-        -sin(-2*pi/3) 0 cos(-2*pi/3)];
+        -sin(alpha(2)) 0 cos(alpha(2))];
+
+Roty3 = [cos(alpha(3))  0 sin(alpha(3));
+             0       1     0;
+        -sin(alpha(3)) 0 cos(alpha(3))];
 
 % Coordinates for virtual elbow joints J1' J2' J3'    
 J1 = [0; -re*sin(q1); R+rf*cos(q1)];
@@ -64,11 +54,9 @@ c3 = [J3p(1) J3p(2) J3p(3)];
 r3 = re;
 
 % Find intersection of two circles
-[z_Ji, y_Ji, x_Ji] = findSphereIntersection(c1,r1,c2,r2,c3,r3)
+[E_0(1), E_0(2), E_0(3)] = findSphereIntersection(c1,r1,c2,r2,c3,r3);
 
 % ---- end testing of func ----
-
-
 
 % % Sphere J1' equation subtracted by sphere J2' equation
 % J1J2 = sphere_J1p - sphere_J2p
@@ -87,7 +75,7 @@ r3 = re;
 % % Therefore, the solution we want for y is the negative solution of
 % % equation below.
 % y = solve(subs(sphere_J1p,x,z),y) %doesn't seem to give me equation i want still has multiple terms in it
-
+end
 
 
 

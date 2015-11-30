@@ -42,8 +42,8 @@ r2 = EipJi;
 qi = atan2( -y_Ji, z_Ji-OFi ); 
 Fi = Roty * [0, 0, OFi]';
 Ji = Roty * [0, y_Ji, z_Ji]';
-% Ei = Roty * [x0, y0, z0+EEi]';
-Ei = Roty * [E_0(1), E_0(2), E_0(3)+EEi]';
+Ei = Roty * [x0, y0, z0+EEi]';
+
 end
 
 
