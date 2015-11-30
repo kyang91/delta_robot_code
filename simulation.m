@@ -9,7 +9,7 @@ re = 300; % Forearm length in mm
 alpha = [0 120*pi/180 -120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
 
 %% Inverse Kinematics - returns joint angles given end-effector position
-E = [-50; -300; 0];% User desired pose of TCP (Tool Center Point)
+E = [10; -300; 0];% User desired pose of TCP (Tool Center Point)
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
 [q3, F3, J3, E3] = IK(E, alpha(3), f, e, rf, re);
@@ -36,9 +36,9 @@ top = [F1'; F2'; F3'; F1'];
 plot3(top(:,1), top(:,2), top(:,3), 'r')
 
 % Three arms connection fixed and moving platforms
-plot3(J1(1), J1(2), J1(3), '*b')
+plot3(J1(1), J1(2), J1(3), 'ob')
 plot3(J2(1), J2(2), J2(3), '*b')
-plot3(J3(1), J3(2), J3(3), '*b')
+plot3(J3(1), J3(2), J3(3), 'xb')
 arm1 = [F1'; J1'; E1'];
 plot3(arm1(:,1), arm1(:,2), arm1(:,3), 'b')
 arm2 = [F2'; J2'; E2'];
@@ -71,9 +71,9 @@ top = [F1'; F2'; F3'; F1'];
 plot3(top(:,1), top(:,2), top(:,3), 'r')
 
 % Three arms connection fixed and moving platforms
-plot3(J1(1), J1(2), J1(3), '*b')
+plot3(J1(1), J1(2), J1(3), 'ob')
 plot3(J2(1), J2(2), J2(3), '*b')
-plot3(J3(1), J3(2), J3(3), '*b')
+plot3(J3(1), J3(2), J3(3), 'xb')
 arm1 = [F1'; J1'; E1'];
 plot3(arm1(:,1), arm1(:,2), arm1(:,3), 'b')
 arm2 = [F2'; J2'; E2'];

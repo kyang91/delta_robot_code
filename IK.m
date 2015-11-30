@@ -32,17 +32,18 @@ r1 = rf;
 
 % Equation of circle whose center is at joint Ei'. 
 circ_Eip = (z_Ji-(z0+EEi))^2 + (y_Ji-y0)^2 - (EipJi)^2;
-c2 = [(z0+EEi) y0];
+c2 = [z0+EEi y0];
 r2 = EipJi;
 
 % Find intersection of two circles
-[z_Ji, y_Ji] = findIntersection(c1,r1,c2,r2);
+[z_Ji, y_Ji] = findCircIntersection(c1,r1,c2,r2);
 
 % We can now solve for the joint angle for actuator Fi using atan2.
 qi = atan2( -y_Ji, z_Ji-OFi ); 
 Fi = Roty * [0, 0, OFi]';
 Ji = Roty * [0, y_Ji, z_Ji]';
-Ei = Roty * [x0, y0, z0+EEi]';
+% Ei = Roty * [x0, y0, z0+EEi]';
+Ei = Roty * [E_0(1), E_0(2), E_0(3)+EEi]';
 end
 
 
