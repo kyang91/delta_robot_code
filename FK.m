@@ -44,7 +44,7 @@ sphere_J2p = (x-J2p(1))^2 + (y-J2p(2))^2 + (z-J2p(3))^2 - re^2;
 sphere_J3p = (x-J3p(1))^2 + (y-J3p(2))^2 + (z-J3p(3))^2 - re^2;
 
 % ------- testing findSphereIntersection function ----
-c1 = [0 J1p(2) J1p(3)];
+c1 = [J1p(1) J1p(2) J1p(3)];
 r1 = re;
 
 c2 = [J2p(1) J2p(2) J2p(3)];
