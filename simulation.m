@@ -10,7 +10,7 @@ alpha = [0 120*pi/180 -120*pi/180]; % Angle exploiting symmetry when computing I
 
 %% Inverse Kinematics - returns joint angles given end-effector position
 disp('Desired TCP position:')
-E = [50; -300; 0] % User desired pose of TCP (Tool Center Point)
+E = [0; -300; 0] % User desired pose of TCP (Tool Center Point)
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
 [q3, F3, J3, E3] = IK(E, alpha(3), f, e, rf, re);
@@ -58,6 +58,12 @@ plot3(E3(1), E3(2), E3(3), '*g')
 bot = [E1'; E2'; E3'; E1'];
 plot3(bot(:,1), bot(:,2), bot(:,3), 'g')
 
+% Desired TCP
+plot3(E(1), E(2), E(3), 'Oblack')
+
+% Calculated TCP from FK
+plot3(E_0(1), E_0(2), E_0(3), '+black')
+
 %%
 figure(2)
 hold on 
@@ -92,3 +98,9 @@ plot3(E2(1), E2(2), E2(3), '*g')
 plot3(E3(1), E3(2), E3(3), '*g')
 bot = [E1'; E2'; E3'; E1'];
 plot3(bot(:,1), bot(:,2), bot(:,3), 'g')
+
+% Desired TCP
+plot3(E(1), E(2), E(3), 'Oblack')
+
+% Calculated TCP from FK
+plot3(E_0(1), E_0(2), E_0(3), '+black')
