@@ -22,13 +22,13 @@ Roty3 = [cos(alpha(3))  0 sin(alpha(3));
         -sin(alpha(3)) 0 cos(alpha(3))];
 
 % Coordinates for virtual elbow joints J1' J2' J3'    
-J1 = [0; -re*sin(q1); R+rf*cos(q1)];
+J1 = [0; -rf*sin(q1); R+rf*cos(q1)];
 J1p = Roty1 * J1;
 
-J2 = [0; -re*sin(q2); R+rf*cos(q2)];
+J2 = [0; -rf*sin(q2); R+rf*cos(q2)];
 J2p = Roty2 * J2;
 
-J3 = [0; -re*sin(q3); R+rf*cos(q3)];
+J3 = [0; -rf*sin(q3); R+rf*cos(q3)];
 J3p = Roty3 * J3;
 
 % Standard equation of a circle whose center is at (h,k)

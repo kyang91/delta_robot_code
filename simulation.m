@@ -9,13 +9,17 @@ re = 300; % Forearm length in mm
 alpha = [0 120*pi/180 -120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
 
 %% Inverse Kinematics - returns joint angles given end-effector position
-E = [0; -300; 0];% User desired pose of TCP (Tool Center Point)
+disp('Desired TCP position:')
+E = [50; -300; 0] % User desired pose of TCP (Tool Center Point)
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
 [q3, F3, J3, E3] = IK(E, alpha(3), f, e, rf, re);
+disp('IK solution for angles (q1, q2, q3) in degrees:')
+[q1*180/pi, q2*180/pi, q3*180/pi]'
 
 %% Forward Kinematics - returns end-effector position given joint angles
-disp('End Effector Position from FK as E_0:')
+disp('TCP solved using FK with joint angles solved from IK as input:')
+% Using results from IK as input into FK as a answer check
 E_0 = FK(q1, q2, q3, alpha, f, e, rf, re)'
 
 

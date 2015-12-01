@@ -10,7 +10,7 @@ syms x_Fi y_Fi z_Fi % Coordinates of joint Fi
 Roty = [cos(alpha)  0 sin(alpha);
              0       1     0;
         -sin(alpha) 0 cos(alpha)];
-    
+
 E_0 = Roty * E; % Coordinate of TCP
 
 % Coordinates of TCP, E(x0,y0,z0)
@@ -39,7 +39,7 @@ r2 = EipJi;
 [z_Ji, y_Ji] = findCircIntersection(c1,r1,c2,r2);
 
 % We can now solve for the joint angle for actuator Fi using atan2.
-qi = atan2( -y_Ji, z_Ji-OFi ); 
+qi = atan2(-y_Ji, z_Ji-OFi); % Return joint angle in radians
 Fi = Roty * [0, 0, OFi]';
 Ji = Roty * [0, y_Ji, z_Ji]';
 Ei = Roty * [x0, y0, z0+EEi]';
