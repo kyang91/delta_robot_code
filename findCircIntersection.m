@@ -13,7 +13,7 @@ sol = solve([r1==sqrt((x-x1)^2+(y-y1)^2), ...
              r2==sqrt((x-x2)^2+(y-y2)^2)]);
 
 % Selected the more negative y value (Otherwords the smallest y value pair)
-if double(sol.y(1)) < double(sol.y(2))
+if double(sol.x(1)) > double(sol.x(2)) %z value check
     x_sol = double(sol.x(1));
     y_sol = double(sol.y(1));
 else
