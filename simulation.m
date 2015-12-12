@@ -6,11 +6,12 @@ f = 109.5; % equilateral triangle side of fixed platform
 e = 33; % equilateral triangle side of moving platform
 rf = 100; % Upper arm length in mm
 re = 300; % Forearm length in mm
-alpha = [0 120*pi/180 -120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
+alpha = [0 -120*pi/180 120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
 
 %% Inverse Kinematics - returns joint angles given end-effector position
 disp('Desired TCP position:')
-E = [-100; -300; 10] % User desired pose of TCP (Tool Center Point)
+% E = [-100; -300; 10] % User desired pose of TCP (Tool Center Point)
+E = [100;-300; 150]
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
 [q3, F3, J3, E3] = IK(E, alpha(3), f, e, rf, re);
