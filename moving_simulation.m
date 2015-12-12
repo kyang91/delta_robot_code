@@ -13,9 +13,10 @@ E = [0;-300;0];
 %% Generate Trajectory Points 
 % Points will be generated to follow an arbitrarily chosen trajectory
 
-trajectory = [linspace(-100,100,10);
-              linspace(-300,-300,10);
-              linspace(-50,100,10)];
+% [x,y,z] = generate_line;
+% [x,y,z] = generate_spiral;
+[x,y,z] = generate_helix;
+trajectory = [x; y; z];
           
 %% Loop Through Points, Do IK and Plot
 % Loop through the points in the trajectory calculate joint locaitons and
@@ -63,7 +64,9 @@ bot = [E1'; E2'; E3'; E1'];
 moving_line_handle = plot3(bot(:,1), bot(:,2), bot(:,3), 'g')
 
 % Desired TCP
-point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), 'Oblack')
+point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red')
+
+pause(3)
 
 for i=1:length(trajectory)
     [q1, F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
@@ -100,7 +103,7 @@ for i=1:length(trajectory)
 %     set(point_handle, 'YData', trajectory(2,i));
 %     set(point_handle, 'ZData', trajectory(3,i));
 
-point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), 'Oblack');
+    point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red', 'markersize', 10);
     
     % Moving platform lines
     bot = [E1'; E2'; E3'; E1'];
