@@ -1,11 +1,27 @@
 % generate spiral path
-function [x, y, z] = generate_spiral
+function [xr, yr, zr] = generate_spiral
     scale = 5; % scaling factor for spiral
     t = linspace(0,5*pi,100);
     x = scale*t.*cos(t);
-    y = scale*t-380; % offset start to be y=-380
+    y = 2*t-310; % offset start to be y=-380
     z = scale*t.*sin(t);
-    figure(2)
-    view(2)
-    plot3(x,y,z,'--blue')
+%     figure
+%     view(2)
+%     plot3(x,y,z,'--blue')
+    
+    xr = fliplr(x);
+    yr = y;
+    zr = fliplr(z);
+    
+%     figure
+%     view(2)
+%     plot3(xr,yr,zr,'--blue')
+    
+%     xt = [x, xr];
+%     yt = [y, yr];
+%     zt = [z, zr];
+%     
+%     figure
+%     view(2)
+%     plot3(xt,yt,zt,'--blue')
 end
