@@ -2,9 +2,9 @@
 function [qi, Fi, Ji, Ei] = IK(E, alpha, f, e, rf, re)
 
 % Robot Parameters of the Delta Robot
-sym pi;
-syms x_Ji y_Ji z_Ji % Coordinates of the origin
-syms x_Fi y_Fi z_Fi % Coordinates of joint Fi
+% sym pi;
+% syms x_Ji y_Ji z_Ji % Coordinates of the origin
+% syms x_Fi y_Fi z_Fi % Coordinates of joint Fi
 
 % Rotation matrix about y-axis
 Roty = [cos(alpha)  0 sin(alpha);
@@ -26,12 +26,12 @@ EipJi = sqrt(re^2-x0^2); % Ei'Ji
 %   => (x-h)^2 + (y-k)^2 = r^2
 
 % Equation of circle whose center is at joint Fi.
-circ_Fi = (z_Ji-OFi)^2 + (y_Ji)^2 - (rf)^2;
+% circ_Fi = (z_Ji-OFi)^2 + (y_Ji)^2 - (rf)^2;
 c1 = [OFi 0];
 r1 = rf;
 
 % Equation of circle whose center is at joint Ei'. 
-circ_Eip = (z_Ji-(z0+EEi))^2 + (y_Ji-y0)^2 - (EipJi)^2;
+% circ_Eip = (z_Ji-(z0+EEi))^2 + (y_Ji-y0)^2 - (EipJi)^2;
 c2 = [z0+EEi y0];
 r2 = EipJi;
 
@@ -42,7 +42,9 @@ r2 = EipJi;
 qi = atan2(-y_Ji, z_Ji-OFi); % Return joint angle in radians
 Fi = Roty * [0, 0, OFi]';
 Ji = Roty * [0, y_Ji, z_Ji]';
-Ei = Roty * [x0, y0, z0+EEi]';
+% Ei = [x0, y0, z0+]';
+val = Roty * [0, 0, EEi]';
+Ei = [E(1), E(2), E(3)]' + val;
 
 end
 
