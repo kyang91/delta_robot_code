@@ -22,8 +22,6 @@ disp('IK solution for angles (q1, q2, q3) in degrees:')
 disp('TCP solved using FK with joint angles solved from IK as input:')
 % Using results from IK as input into FK as a answer check
 E_0 = FK(q1, q3, q2, alpha, f, e, rf, re)'
-% ^^NOTE!!!!^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ if i flip order of q2 and
-% q3 i get the right asnwer but why is that??????????????????????????
 
 %% Plot Delta robot
 figure(1)

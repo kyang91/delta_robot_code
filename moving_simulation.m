@@ -10,11 +10,16 @@ re = 300; % Forearm length in mm
 alpha = [0 -120*pi/180 120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
 E = [0;-300;0]; % Desired TCP
 
+
+% *************************** SET PATH TO TRACE **************************
+% Select which path to trace: line = 1, spiral = 2, or helix = 3
+select_path = 3;
+% ************************************************************************
+
 %% Generate Trajectory Points 
 % Points will be generated to follow an arbitrarily chosen trajectory
 
-% Select which path to trace: line, spiral, or helix
-select_path = 1; % Use this to select which path to use
+% Generate points for TCP to trace
 if select_path == 1
     [x,y,z] = generate_line;
     filename = 'line.csv'
@@ -176,12 +181,12 @@ Link = linkprop([plot1, plot2], ...
        {'CameraUpVector', 'CameraPosition', 'CameraTarget', 'CameraViewAngle'});
 setappdata(gcf, 'StoreTheLink', Link);
 
-q = [q1;q2;q3]' % Joint positions
-
+q = [q1;q2;q3]'; % Joint positions
 csvwrite(filename, q) % Export joint positions for path to csv file
 
-
-
+%% Plot joint positions
+figure
+plot(q)
 
 
 

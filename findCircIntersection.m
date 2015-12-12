@@ -8,17 +8,27 @@ syms x y; % Points we are trying to solve for
 x1 = c1(1); x2 = c2(1);
 y1 = c1(2); y2 = c2(2);
 
-% Calculate the intersection
-sol = solve([r1==sqrt((x-x1)^2+(y-y1)^2), ...
-             r2==sqrt((x-x2)^2+(y-y2)^2)]);
+% ---- Calculate the intersection using method #1. Not optimized ----
+% sol = solve([r1==sqrt((x-x1)^2+(y-y1)^2), ...
+%              r2==sqrt((x-x2)^2+(y-y2)^2)]);
 
-% Selected the more negative y value (Otherwords the smallest y value pair)
-if double(sol.x(1)) > double(sol.x(2)) %z value check
-    x_sol = double(sol.x(1));
-    y_sol = double(sol.y(1));
+% % Selected the more negative y value (Otherwords the smallest y value pair)
+% if double(sol.x(1)) > double(sol.x(2)) %z value check
+%     x_sol = double(sol.x(1));
+%     y_sol = double(sol.y(1));
+% else
+%     x_sol = double(sol.x(2));
+%     y_sol = double(sol.y(2));
+% end
+
+% ---- Calculate the intersection using method #2. Optimized function. ----
+[circx, circy] = circcirc(x1,y1,r1,x2,y2,r2);
+if double(circx(1)) > double(circx(2)) %z value check
+    x_sol = double(circx(1));
+    y_sol = double(circy(1));
 else
-    x_sol = double(sol.x(2));
-    y_sol = double(sol.y(2));
+    x_sol = double(circx(2));
+    y_sol = double(circy(2));
 end
 
 end
