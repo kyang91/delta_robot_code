@@ -13,7 +13,7 @@ E = [0;-300;0]; % Desired TCP
 
 % *************************** SET PATH TO TRACE **************************
 % Select which path to trace: line = 1, spiral = 2, or helix = 3
-select_path = 3;
+select_path = 2;
 % ************************************************************************
 
 %% Generate Trajectory Points 
@@ -71,6 +71,7 @@ line_width = 2; % Set width of the drawn lines of robot
 [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
 [q2(1,i), F2, J2, E2] = IK(trajectory(:,i), alpha(2), f, e, rf, re);
 [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re); 
+E_0(i,:) = FK(q1(1,i), q3(1,i), q2(1,i), alpha, f, e, rf, re)';
 
 % Top fixed platform
 fixed1_handle = plot3(F1(1), F1(2), F1(3), 'Or');
@@ -106,7 +107,8 @@ for i=1:length(trajectory)
     % Solve IK
     [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
     [q2(1,i), F2, J2, E2] = IK(trajectory(:,i), alpha(2), f, e, rf, re);
-    [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re); 
+    [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re);
+    E_0(i,:) = FK(q1(1,i), q3(1,i), q2(1,i), alpha, f, e, rf, re)';
 
     % Fixed platform
     set(fixed1_handle, 'XData', F1(1));
@@ -184,10 +186,20 @@ setappdata(gcf, 'StoreTheLink', Link);
 q = [q1;q2;q3]'; % Joint positions
 csvwrite(filename, q) % Export joint positions for path to csv file
 
-%% Plot joint positions
+%% Plot joint and TCP position
 figure
 plot(q)
+xlabel('Point locaiton along path')
+ylabel('Joint position (radians)')
+title('Plot of Joint Position for Path')
+legend('q1', 'q2', 'q3')
 
+figure
+plot(E_0)
+xlabel('Point location along path')
+ylabel('Position (mm)')
+title('Plot of TCP Position for Path')
+legend('X', 'Y', 'Z')
 
 
 

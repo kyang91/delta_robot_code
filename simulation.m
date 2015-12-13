@@ -10,7 +10,7 @@ alpha = [0 -120*pi/180 120*pi/180]; % Angle exploiting symmetry when computing I
 
 %% Inverse Kinematics - returns joint angles given end-effector position
 disp('Desired TCP position:')
-E = [0; -280; 0] % User desired pose of TCP (Tool Center Point)
+E = [-100; -280; 100] % User desired pose of TCP (Tool Center Point)
 
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
