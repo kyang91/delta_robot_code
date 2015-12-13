@@ -2,7 +2,6 @@
 % Paulo Carvalho and Kevin Yang
 clc; clear all; close all
 %% Robot Parameters
-
 f = 109.5; % equilateral triangle side of fixed platform
 e = 33; % equilateral triangle side of moving platform
 rf = 100; % Upper arm length in mm
@@ -13,27 +12,33 @@ E = [0;-300;0]; % Desired TCP
 
 % *************************** SET PATH TO TRACE **************************
 % Select which path to trace: line = 1, spiral = 2, or helix = 3
-select_path = 2;
+select_path = 1;
 % ************************************************************************
 
 %% Generate Trajectory Points 
 % Points will be generated to follow an arbitrarily chosen trajectory
 
-% Generate points for TCP to trace
-if select_path == 1
-    [x,y,z] = generate_line;
-    filename = 'line.csv'
-elseif select_path == 2
-    [x,y,z] = generate_spiral;
-    filename = 'spiral.csv'
-elseif select_path == 3
-    [x,y,z] = generate_helix;
-    filename = 'helix.csv'
-else
-    [x,y,z] = generate_line;
-    filename = 'line.csv'
-end
+% % Generate points for TCP to trace
+% if select_path == 1
+%     [x,y,z] = generate_line;
+%     filename = 'line.csv'
+% elseif select_path == 2
+%     [x,y,z] = generate_spiral;
+%     filename = 'spiral.csv'
+% elseif select_path == 3
+%     [x,y,z] = generate_helix;
+%     filename = 'helix.csv'
+% else
+%     [x,y,z] = generate_line;
+%     filename = 'line.csv'
+% end
 
+% [x,y,z] = generate_hypotrochoid;
+% [x,y,z] = generate_hypotrochoid_star;
+% [x,y,z] = generate_slinky;
+% [x,y,z] = generate_Lissajous_curve;
+
+filename = 'test.csv';
 trajectory = [x; y; z]; % create trajectory matrix
 
 % Plot desired path
@@ -64,8 +69,13 @@ xlabel(plot2, 'X')
 ylabel(plot2, 'Y')
 zlabel(plot2, 'Z')
 title(plot2, 'Animation of Delta Robot tracing desired path')
-view(12,-46);
-line_width = 2; % Set width of the drawn lines of robot
+view(10,-46);
+line_width = 2; % Set width of the drawn lines of robot1
+
+% Link subplot's rotation so they are synchrononized
+Link = linkprop([plot1, plot2], ...
+       {'CameraUpVector', 'CameraPosition', 'CameraTarget', 'CameraViewAngle'});
+setappdata(gcf, 'StoreTheLink', Link);
 
 % Solve IK
 [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
@@ -101,7 +111,7 @@ moving_line_handle = plot3(bot(:,1), bot(:,2), bot(:,3), 'g', 'LineWidth', line_
 % Desired TCP
 point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red');
 
-pause(3)
+pause(1)
 
 for i=1:length(trajectory)
     % Solve IK
@@ -178,10 +188,7 @@ for i=1:length(trajectory)
     pause(0.01); 
 end
 
-% Link subplot's rotation so they are synchrononized
-Link = linkprop([plot1, plot2], ...
-       {'CameraUpVector', 'CameraPosition', 'CameraTarget', 'CameraViewAngle'});
-setappdata(gcf, 'StoreTheLink', Link);
+
 
 q = [q1;q2;q3]'; % Joint positions
 csvwrite(filename, q) % Export joint positions for path to csv file
