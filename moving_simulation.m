@@ -49,7 +49,7 @@ zlabel(plot1, 'Z')
 title(plot1, 'Desired TCP Path to Trace')
 view(12,-46);
           
-%% Loop Through Points, Do IK and Plot
+%% Loop Through Points, Compute IK and FK and plot animation
 % Loop through the points in the trajectory calculate joint locaitons and
 % plot them.
 
@@ -195,11 +195,27 @@ title('Plot of Joint Position for Path')
 legend('q1', 'q2', 'q3')
 
 figure
-plot(E_0)
-xlabel('Point location along path')
-ylabel('Position (mm)')
-title('Plot of TCP Position for Path')
-legend('X', 'Y', 'Z')
+set(gcf,'units','normalized','outerposition',[0 0 1 1])
+comp1 = subplot(1,2,1);
+plot(E_0);
+grid(comp1, 'on');
+xlabel(comp1, 'Point location along path')
+ylabel(comp1, 'Position (mm)')
+zlabel(comp1, 'Z')
+title(comp1, 'Plot of TCP Position for Path (Calculated from FK)')
+legend(comp1, 'X', 'Y', 'Z')
+
+comp2 = subplot(1,2,2);
+plot(trajectory')
+grid(comp2, 'on');
+xlabel(comp2, 'Point location along path')
+ylabel(comp2, 'Position (mm)')
+zlabel(comp2, 'Z')
+title(comp2, 'Plot of TCP Position for Path (Desired TCP)')
+legend(comp2, 'X', 'Y', 'Z')
+
+
+
 
 
 
