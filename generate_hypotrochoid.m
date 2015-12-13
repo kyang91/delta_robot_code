@@ -1,17 +1,17 @@
 % generate slinky path
 function [x, y, z] = generate_hypotrochoid
-    t = linspace(0,20,2000);
+    t = linspace(0,6.5,1000);
     R = 50;
     r = 3;
     d = 30;
-    offset = 100;
+    offset = -50;
     
     x = (R-r)*cos(t) + d*cos((R-r)*t/r)+offset;
-    y = (R-r)*sin(t) - d*sin((R-r)*t/r)+offset;
-    z = linspace(-300,-300,2000);
+    z = (R-r)*sin(t) - d*sin((R-r)*t/r)+offset;
+    y = linspace(-350,-350,1000);
     
     
-    figure
-    view(2)
-    plot3(x,y,z,'blue')
+%     figure
+%     view(2)
+%     plot3(x,y,z,'blue')
 end

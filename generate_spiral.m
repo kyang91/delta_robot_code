@@ -1,9 +1,9 @@
 % generate spiral path
 function [xr, yr, zr] = generate_spiral
     scale = 5; % scaling factor for spiral
-    t = linspace(0,5*pi,500);
+    t = linspace(0,5*pi,1000);
     x = scale*t.*cos(t);
-    y = 2*t-310; % offset start to be y=-380
+    y = 2*t-330; % offset start to be y=-380
     z = scale*t.*sin(t);
 %     figure
 %     view(2)
