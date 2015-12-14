@@ -8,7 +8,7 @@ function [x, y, z] = generate_hypotrochoid
     
     x = (R-r)*cos(t) + d*cos((R-r)*t/r)+offset;
     z = (R-r)*sin(t) - d*sin((R-r)*t/r)+offset;
-    y = linspace(-350,-350,1000);
+    y = linspace(-370,-370,1000);
     
     
 %     figure

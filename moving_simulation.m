@@ -1,7 +1,17 @@
 %% RBE595-196W Trajectory Simulation
 % Paulo Carvalho and Kevin Yang
+% Simulation will use the Delta Robot's TCP to follow six different
+% trajectories. The simulation will animate the robot and then output
+% graphs showing its joint and TCP position over the path length.
+
+% *** WARNING: Interacting with Matlab while simulation is running may
+% interfere with the animation and cause it to glitch out. It is safe to 
+% interact with graphs after simulation is done.  ***
+
 clc; clear all; close all
 %% Robot Parameters
+disp('Simulation is now running...')
+disp('Simulation will loop through six trajectories:')
 f = 380; % equilateral triangle side of fixed platform
 e = 116; % equilateral triangle side of moving platform
 rf = 154; % Upper arm length in mm
@@ -12,39 +22,31 @@ E = [0;-300;0]; % Desired TCP
 %% Generate Trajectory Points 
 % Points will be generated to follow an arbitrarily chosen trajectory
 
-
-% [x,y,z] = generate_helix;
-% filename = 'traj_helix.csv'
-% [x,y,z] = generate_hypotrochoid;
-% filename = 'traj_path_hypotrochoid.csv'
-% [x,y,z] = generate_hypotrochoid_star;
-% filename = 'traj_hypotrochoid_star.csv'
-% [x,y,z] = generate_slinky;
-% filename = 'traj_slinky.csv'
-% [x,y,z] = generate_Lissajous_curve;
-% filename = 'traj_Lissajous_curve.csv'
-% [x,y,z] = generate_spiral;
-% filename = 'traj_spiral.csv'
-
 for j=1:6 % Loop through 6 different trajectories    
     if j == 1
-        [x,y,z] = generate_helix;
-        filename = 'trajHelix.csv'        
+        [x,y,z] = generate_hypotrochoid_star;
+        filename = 'trajHypotrochoidStar.csv';
+        disp('(1/6) Executing trajectory: Hypotrochoid Star')
     elseif j == 2
         [x,y,z] = generate_hypotrochoid;
-        filename = 'trajHypotrochoid.csv'
+        filename = 'trajHypotrochoid.csv';
+        disp('(2/6) Executing trajectory: Hypotrochoid')
     elseif j == 3
-        [x,y,z] = generate_hypotrochoid_star;
-        filename = 'trajHypotrochoidStar.csv'
+        [x,y,z] = generate_helix;
+        filename = 'trajHelix.csv';
+        disp('(3/6) Executing trajectory: Helix')
     elseif j == 4
         [x,y,z] = generate_slinky;
-        filename = 'trajSlinky.csv'
+        filename = 'trajSlinky.csv';
+        disp('(4/6) Executing trajectory: Slinky')
     elseif j == 5
         [x,y,z] = generate_Lissajous_curve;
-        filename = 'trajLissajousCurve.csv'
+        filename = 'trajLissajousCurve.csv';
+        disp('(5/6) Executing trajectory: LissajousCurve')
     elseif j == 6   
         [x,y,z] = generate_spiral;
-        filename = 'trajSpiral.csv'
+        filename = 'trajSpiral.csv';
+        disp('(6/6) Executing trajectory: Spiral')
     end
     
     trajectory = [x; y; z]; % create trajectory matrix
@@ -59,8 +61,8 @@ for j=1:6 % Loop through 6 different trajectories
     xlabel(plot1, 'X')
     ylabel(plot1, 'Y')
     zlabel(plot1, 'Z')
-    title_name = strcat('Desired TCP Path to Trace',filename)
-    title(plot1, title_name)
+    title_name = strcat('Desired TCP Path to Trace: ',filename);
+    title(plot1, title_name, 'FontSize', 18)
     view(12,-46);
 
     %% Loop Through Points, Compute IK and FK and plot animation
@@ -77,8 +79,8 @@ for j=1:6 % Loop through 6 different trajectories
     xlabel(plot2, 'X')
     ylabel(plot2, 'Y')
     zlabel(plot2, 'Z')
-    title_name2 = strcat('Animation of Delta Robot tracing desired path',filename)
-    title(plot2, title_name2)
+    title_name2 = strcat('Animation of Delta Robot tracing desired path: ',filename);
+    title(plot2, title_name2, 'FontSize', 18)
     view(10,-46);
     line_width = 2; % Set width of the drawn lines of robot1
 
@@ -91,6 +93,8 @@ for j=1:6 % Loop through 6 different trajectories
     [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
     [q2(1,i), F2, J2, E2] = IK(trajectory(:,i), alpha(2), f, e, rf, re);
     [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re); 
+    
+    % Solve FK
     E_0(i,:) = FK(q1(1,i), q3(1,i), q2(1,i), alpha, f, e, rf, re)';
 
     % Top fixed platform
@@ -128,7 +132,29 @@ for j=1:6 % Loop through 6 different trajectories
         [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
         [q2(1,i), F2, J2, E2] = IK(trajectory(:,i), alpha(2), f, e, rf, re);
         [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re);
+        
+        % Solve FK
         E_0(i,:) = FK(q1(1,i), q3(1,i), q2(1,i), alpha, f, e, rf, re)';
+        
+        % Check if trajectory pts are out of bounds for robot
+        if (abs(q1(1,i))*180/pi) < 10
+            disp('out of bound for our real robot')
+        end
+        if (abs(q2(1,i))*180/pi) < 10
+            disp('out of bound for our real robot')
+        end
+        if (abs(q3(1,i))*180/pi) < 10
+            disp('out of bound for our real robot')
+        end
+        if (abs(q1(1,i))*180/pi) > 80
+            disp('out of bound for our real robot')
+        end
+        if (abs(q2(1,i))*180/pi) > 80
+            disp('out of bound for our real robot')
+        end
+        if (abs(q3(1,i))*180/pi) > 80
+            disp('out of bound for our real robot')
+        end
 
         % Fixed platform
         set(fixed1_handle, 'XData', F1(1));
@@ -199,7 +225,8 @@ for j=1:6 % Loop through 6 different trajectories
     end
     
     % Export trajectory to csv file
-    q = [q1' q2' q3']; % Joint positions    
+    q = [q1' q2' q3']; % Joint positions
+    
     if j == 1
         q_all = q;        
     else
@@ -209,12 +236,13 @@ for j=1:6 % Loop through 6 different trajectories
 
     %% Plot joint and TCP position
     figure
-    comp = subplot(2,2,1)
+    
+    comp = subplot(2,2,1);
     plot(q)
     xlabel('Point locaiton along path')
     ylabel('Joint position (radians)')
-    title1 = strcat('Plot of TCP Position for Path (Calculated from IK) ',filename)
-    title(title1)
+    title1 = strcat('Plot of TCP Position for Path (Calculated from IK): ',filename);
+    title(title1, 'FontSize', 18)
     legend('q1', 'q2', 'q3')
 
 %     figure
@@ -225,8 +253,8 @@ for j=1:6 % Loop through 6 different trajectories
     xlabel(comp1, 'Point location along path')
     ylabel(comp1, 'Position (mm)')
     zlabel(comp1, 'Z')
-    title2 = strcat('Plot of TCP Position for Path (Calculated from FK) ',filename)
-    title(comp1, title2)
+    title2 = strcat('Plot of TCP Position for Path (Calculated from FK): ',filename);
+    title(comp1, title2, 'FontSize', 18)
     legend(comp1, 'X', 'Y', 'Z')
 
     comp2 = subplot(2,2,4);
@@ -235,14 +263,16 @@ for j=1:6 % Loop through 6 different trajectories
     xlabel(comp2, 'Point location along path')
     ylabel(comp2, 'Position (mm)')
     zlabel(comp2, 'Z')
-    title3 = strcat('Plot of TCP Position for Path (Desired TCP)',filename)
-    title(comp2, title3)
+    title3 = strcat('Plot of TCP Position for Path (Desired TCP): ',filename);
+    title(comp2, title3, 'FontSize', 18)
     legend(comp2, 'X', 'Y', 'Z')
-    pause(1)
+    pause(2)
 end
 
 %% export combined trajectories into a single csv
 csvwrite('traj_all.csv', q_all)
+
+disp('Simulation is complete')
 
 
 
