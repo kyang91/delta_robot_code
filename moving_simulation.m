@@ -2,7 +2,8 @@
 % Paulo Carvalho and Kevin Yang
 % Simulation will use the Delta Robot's TCP to follow six different
 % trajectories. The simulation will animate the robot and then output
-% graphs showing its joint and TCP position over the path length.
+% graphs showing its joint and TCP position over the path length. Graphs
+% for the robot workspace are also generated.
 
 % *** WARNING: Interacting with Matlab while simulation is running may
 % interfere with the animation and cause it to glitch out. It is safe to 
@@ -92,7 +93,7 @@ for j=1:6 % Loop through 6 different trajectories
     % Solve IK
     [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
     [q2(1,i), F2, J2, E2] = IK(trajectory(:,i), alpha(2), f, e, rf, re);
-    [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re); 
+    [q3(1,i), F3, J3, E3] = IK(trajectory(:,i), alpha(3), f, e, rf, re);        
     
     % Solve FK
     E_0(i,:) = FK(q1(1,i), q3(1,i), q2(1,i), alpha, f, e, rf, re)';
@@ -271,6 +272,11 @@ end
 
 %% export combined trajectories into a single csv
 csvwrite('traj_all.csv', q_all)
+
+%% Generate and Plot Workspace
+plotWorkspace(alpha, f, e, rf, re)
+disp('Please wait. Generating Delta Robot workspace')
+pause(5)
 
 disp('Simulation is complete')
 

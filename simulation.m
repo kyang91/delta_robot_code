@@ -2,15 +2,15 @@
 clc;clear;close all;
 
 %% Robot Parameters of the Delta Robot
-f = 109.5; % equilateral triangle side of fixed platform
-e = 33; % equilateral triangle side of moving platform
-rf = 100; % Upper arm length in mm
-re = 300; % Forearm length in mm
+f = 380; % equilateral triangle side of fixed platform
+e = 116; % equilateral triangle side of moving platform
+rf = 154; % Upper arm length in mm
+re = 345; % Forearm length in mm
 alpha = [0 -120*pi/180 120*pi/180]; % Angle exploiting symmetry when computing IK. -120deg/+120deg
 
 %% Inverse Kinematics - returns joint angles given end-effector position
 disp('Desired TCP position:')
-E = [-100; -280; 100] % User desired pose of TCP (Tool Center Point)
+E = [0; -300; 0] % User desired pose of TCP (Tool Center Point)
 
 [q1, F1, J1, E1] = IK(E, alpha(1), f, e, rf, re);
 [q2, F2, J2, E2] = IK(E, alpha(2), f, e, rf, re);
@@ -23,8 +23,11 @@ disp('TCP solved using FK with joint angles solved from IK as input:')
 % Using results from IK as input into FK as a answer check
 E_0 = FK(q1, q3, q2, alpha, f, e, rf, re)'
 
+%% Plot Workspace
+plotWorkspace(alpha, f, e, rf, re)
+
 %% Plot Delta robot
-figure(1)
+figure
 hold on 
 grid on
 axis square
@@ -64,8 +67,8 @@ plot3(E(1), E(2), E(3), 'Oblack')
 % Calculated TCP from FK
 plot3(E_0(1), E_0(2), E_0(3), '+black')
 
-%%
-figure(2)
+%% Plot robot different view
+figure
 hold on 
 grid on
 axis square
