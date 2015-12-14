@@ -1,9 +1,11 @@
-%% RBE595-196W Trajectory Simulation
+%% RBE595-196W Delta Robot Trajectory Simulation
 % Paulo Carvalho and Kevin Yang
 % Simulation will use the Delta Robot's TCP to follow six different
 % trajectories. The simulation will animate the robot and then output
 % graphs showing its joint and TCP position over the path length. Graphs
-% for the robot workspace are also generated.
+% for the robot workspace are also generated. CSV files for each trajectory
+% is generated that contains the saved joint positions for use on the real
+% robot.
 
 % *** WARNING: Interacting with Matlab while simulation is running may
 % interfere with the animation and cause it to glitch out. It is safe to 
@@ -53,42 +55,59 @@ for j=1:6 % Loop through 6 different trajectories
     trajectory = [x; y; z]; % create trajectory matrix
 
     % Plot desired path
-    figure
-    plot1 = subplot(1,2,1);
-    plot3(x,y,z,':blue')
-    grid(plot1, 'on');
-    axis(plot1, [-300 300 -500 50 -300 300])
-    axis(plot1, 'square')
-    xlabel(plot1, 'X')
-    ylabel(plot1, 'Y')
-    zlabel(plot1, 'Z')
-    title_name = strcat('Desired TCP Path to Trace: ',filename);
-    title(plot1, title_name, 'FontSize', 18)
-    view(12,-46);
+%     figure
+%     plot1 = subplot(1,2,1);
+%     plot3(x,y,z,':blue')
+%     grid(plot1, 'on');
+%     axis(plot1, [-300 300 -500 50 -300 300])
+%     axis(plot1, 'square')
+%     xlabel(plot1, 'X')
+%     ylabel(plot1, 'Y')
+%     zlabel(plot1, 'Z')
+%     title_name = strcat('Desired TCP Path to Trace: ',filename);
+%     title(plot1, title_name, 'FontSize', 18)
+%     view(12,-46);
 
     %% Loop Through Points, Compute IK and FK and plot animation
     % Loop through the points in the trajectory calculate joint locaitons and
     % plot them.
 
+%     i=1;
+%     plot2 = subplot(1,2,2);
+%     set(gcf,'units','normalized','outerposition',[0 0 1 1])
+%     hold on;
+%     grid(plot2, 'on');
+%     axis(plot2, [-300 300 -500 50 -300 300])
+%     axis(plot2, 'square')
+%     xlabel(plot2, 'X')
+%     ylabel(plot2, 'Y')
+%     zlabel(plot2, 'Z')
+%     title_name2 = strcat('Animation of Delta Robot tracing desired path: ',filename);
+%     title(plot2, title_name2, 'FontSize', 18)
+%     view(10,-46);
+% %     view(0,0);
+%     line_width = 2; % Set width of the drawn lines of robot1
+
     i=1;
-    plot2 = subplot(1,2,2);
+    figure    
     set(gcf,'units','normalized','outerposition',[0 0 1 1])
     hold on;
-    grid(plot2, 'on');
-    axis(plot2, [-300 300 -500 50 -300 300])
-    axis(plot2, 'square')
-    xlabel(plot2, 'X')
-    ylabel(plot2, 'Y')
-    zlabel(plot2, 'Z')
+    grid on;
+    plot3(x,y,z,':blue','linewidth',1)
+    axis([-300 300 -500 50 -300 300])
+    axis 'square';
+    xlabel('X')
+    ylabel('Y')
+    zlabel('Z')
     title_name2 = strcat('Animation of Delta Robot tracing desired path: ',filename);
-    title(plot2, title_name2, 'FontSize', 18)
+    title(title_name2, 'FontSize', 18)
     view(10,-46);
     line_width = 2; % Set width of the drawn lines of robot1
 
-    % Link subplot's rotation so they are synchrononized
-    Link = linkprop([plot1, plot2], ...
-           {'CameraUpVector', 'CameraPosition', 'CameraTarget', 'CameraViewAngle'});
-    setappdata(gcf, 'StoreTheLink', Link);
+%     % Link subplot's rotation so they are synchrononized
+%     Link = linkprop([plot1, plot2], ...
+%            {'CameraUpVector', 'CameraPosition', 'CameraTarget', 'CameraViewAngle'});
+%     setappdata(gcf, 'StoreTheLink', Link);
 
     % Solve IK
     [q1(1,i), F1, J1, E1] = IK(trajectory(:,i), alpha(1), f, e, rf, re);
@@ -124,7 +143,7 @@ for j=1:6 % Loop through 6 different trajectories
     moving_line_handle = plot3(bot(:,1), bot(:,2), bot(:,3), 'g', 'LineWidth', line_width);
 
     % Desired TCP
-    point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red','markersize', 4);
+    point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red','markersize', 6);
 
     pause(1)
 
@@ -184,7 +203,7 @@ for j=1:6 % Loop through 6 different trajectories
         set(moving3_handle, 'ZData', E3(3));  
 
         % Show the points using in path
-        point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red', 'markersize', 4);
+        point_handle = plot3(trajectory(1,i), trajectory(2,i), trajectory(3,i), '.red', 'markersize', 6);
 
         % Moving platform lines
         bot = [E1'; E2'; E3'; E1'];
